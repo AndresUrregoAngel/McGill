@@ -1,4 +1,4 @@
-########### Pig
+### Pig
 
 --question 1 load files
 rides = LOAD '/user/cloudera/bixitrips/' USING PigStorage(',');
@@ -314,3 +314,30 @@ SELECT * FROM tbl_stationtrips_nonmembers;
 -- question 12 querying on bucked table
 
 select count(*) FROM tbl_members_partition_bucket;
+
+## Impala
+
+--- get the total of rides 4740357 (from April to Nov 2017)
+select count(*) from tbl_stationtrips;
+
+
+--- get the top station by percentage
+SELECT 
+name,
+(COUNT(*) / 4740357 ) * 100 as percentage
+FROM tbl_stations st INNER JOIN tbl_stationtrips trp
+ON st.code = trp.start_station_code
+GROUP BY name
+ORDER BY 2 DESC
+LIMIT 5;
+
+---- counting number of trips per station
+
+SELECT 
+name,
+COUNT(*) 
+FROM tbl_stations st INNER JOIN tbl_stationtrips trp
+ON st.code = trp.start_station_code
+GROUP BY name
+ORDER BY 2 DESC
+LIMIT 5;
